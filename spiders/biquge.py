@@ -3,6 +3,8 @@ import scrapy
 import re
 from scrapy.http import Request
 from urllib import parse
+from ArticleSpider.items import BiQuGeListItem
+from ArticleSpider.utils.common import get_md5
 
 
 class BiqugeSpider(scrapy.Spider):
@@ -27,16 +29,28 @@ class BiqugeSpider(scrapy.Spider):
         pass
 
     def parse_list(self, response):
+        # 实例化项目
+        article_item = BiQuGeListItem()
+
         title = response.xpath('//*[@id="info"]/h1/text()')    # 小说标题
         author = response.xpath('//*[@id="info"]/p[1]/text()').extract()[0].strip()     # 作者
-        last_update_time = response.xpath('//*[@id="info"]/p[3]/text()')    # 最后更新时间
+        last_update_time = response.xpath('//*[@id="info"]/p[3]/text()').extract_first("")    # 最后更新时间
+        post_url = response.xpath('//*[@id="fmimg"]/img/@src').extract_first("")    # 图片
+        front_image_url = parse.urljoin(response.url, post_url)
         list = response.xpath('//*[@id="list"]/dl/dd/a/@href').extract()   # 列表
 
-        if list:
-            post_urls = []
-            for each in list:
-                # post_urls.append(parse.urljoin(response.url, each))
-                yield Request(url=parse.urljoin(response.url, each), callback=self.parse_details)
+        article_item['url_object_id'] = get_md5(response.url)
+        article_item['title'] = title
+        article_item['author'] = author
+        article_item['last_update_time'] = last_update_time
+        article_item['front_image_url'] = [front_image_url]
+        yield article_item
+
+        # if list:
+        #     post_urls = []
+        #     for each in list:
+        #         # post_urls.append(parse.urljoin(response.url, each))
+        #         yield Request(url=parse.urljoin(response.url, each), callback=self.parse_details)
 
         pass
 
