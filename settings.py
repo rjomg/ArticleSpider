@@ -65,11 +65,15 @@ ROBOTSTXT_OBEY = False
 
 # Configure item pipelines
 # See https://doc.scrapy.org/en/latest/topics/item-pipeline.html
-ITEM_PIPELINES = {
-   'ArticleSpider.pipelines.JsonWithEncodingPipeline': 3,
-   # 'ArticleSpider.pipelines.ArticlespiderPipeline': 2,
-   'ArticleSpider.pipelines.ArticleImagePipeline': 1,
-}
+# ITEM_PIPELINES = {
+#    # 'ArticleSpider.pipelines.JsonExporterPipeline': 3,
+#    # 'ArticleSpider.pipelines.JsonWithEncodingPipeline': 3,
+#    # 'ArticleSpider.pipelines.ArticlespiderPipeline': 2,
+#    # 'ArticleSpider.pipelines.MysqlPipeline': 2, # mysql 同步执行
+#    'ArticleSpider.pipelines.MysqlTwistedPipeline': 2,  # mysql异步执行
+#    # 'ArticleSpider.pipelines.MongoPipeline': 2,
+#    # 'ArticleSpider.pipelines.ArticleImagePipeline': 1,
+# }
 IMAGES_URLS_FIELD = "front_image_url"
 project_dir = os.path.abspath(os.path.dirname(__file__))
 IMAGES_STORE = os.path.join(project_dir, 'images')
@@ -94,3 +98,8 @@ IMAGES_STORE = os.path.join(project_dir, 'images')
 #HTTPCACHE_DIR = 'httpcache'
 #HTTPCACHE_IGNORE_HTTP_CODES = []
 #HTTPCACHE_STORAGE = 'scrapy.extensions.httpcache.FilesystemCacheStorage'
+
+MYSQL_HOST = '120.78.208.86'
+MYSQL_DBNAME = 'article-spider'
+MYSQL_USER = 'root'
+MYSQL_PASSWORD = 'root'
