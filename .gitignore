@@ -98,3 +98,4 @@ ENV/
 # mypy
 .mypy_cache/
 images/full/
+settings.py

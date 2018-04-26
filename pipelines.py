@@ -35,10 +35,15 @@ class JsonWithEncodingPipeline(object):
 
 
 class MysqlPipeline(object):
-    # mysql 爬虫同步执行 容易造成mysql 堵塞
-    def __init__(self):
-        self.conn = MySQLdb.connect('120.78.208.86', 'root', 'root', 'article-spider', charset="utf8", use_unicode=True)
-        self.cursor = self.conn.cursor()
+    # # mysql 爬虫同步执行 容易造成mysql 堵塞
+    def __init__(self, conn):
+        self.conn = conn
+        self.cursor = conn.cursor()
+
+    @classmethod
+    def from_settings(cls, settings):
+        conn = MySQLdb.connect(settings['MYSQL_HOST'], settings['MYSQL_USER'], settings['MYSQL_PASSWORD'], settings['MYSQL_DBNAME'], charset="utf8", use_unicode=True)
+        return cls(conn)
 
     def process_item(self, item, spider):
         insert_sql = """
@@ -95,11 +100,16 @@ class MysqlTwistedPipeline(object):
                             """
                 cursor.execute(insert_sql, (item["url_object_id"], item["title"], item["author"], item["front_image_url"], item["front_image_path"], item["last_update_time"]))
 
-class MongoPipeline(object):
-    def __init__(self):
-        self.conn = pymongo.MongoClient('120.78.208.86', 27017)
-        self.db = self.conn.article_spider  # 连接mydb数据库，没有则自动创建
 
+class MongoPipeline(object):
+    def __init__(self, db):
+        self.db = db
+
+    @classmethod
+    def from_settings(cls, settings):
+        conn = pymongo.MongoClient(settings['MONGO_HOST'], 27017)
+        db = conn.article_spider  # 连接 mongodb 数据库，没有则自动创建
+        return cls(db)
 
     def process_item(self, item, spider):
         if spider.name == 'jobbole':
@@ -112,9 +122,14 @@ class MongoPipeline(object):
 
 
 class BiqugeMongoPipeline(object):
-    def __init__(self):
-        self.conn = pymongo.MongoClient('120.78.208.86', 27017)
-        self.db = self.conn.article_spider  # 连接mydb数据库，没有则自动创建
+    def __init__(self, db):
+        self.db = db
+
+    @classmethod
+    def from_settings(cls, settings):
+        conn = pymongo.MongoClient(settings['MONGO_HOST'], 27017)
+        db = conn.article_spider  # 连接 mongodb 数据库，没有则自动创建
+        return cls(db)
 
     def process_item(self, item, spider):
         if spider.name == 'biquge':

@@ -13,7 +13,8 @@ from ArticleSpider.items import ArticleItemLoader
 class BiqugeSpider(scrapy.Spider):
     name = 'biquge'
     allowed_domains = ['www.biquge.com.tw']
-    start_urls = ['http://www.biquge.com.tw/modules/article/soshu.php?searchkey=+%B6%B7%C2%DE%B4%F3%C2%BD']     # 关键字 斗 6页
+    # start_urls = ['http://www.biquge.com.tw/modules/article/soshu.php?searchkey=+%B6%B7%C2%DE%B4%F3%C2%BD']     # 关键字 斗 6页
+    start_urls = ['http://www.biquge.com.tw/modules/article/soshu.php?searchkey=+%C8%AB%D6%B0%B8%DF%CA%D6']     # 关键字 斗 6页
     # start_urls = ['http://www.biquge.com.tw/']
     # 自定义
     custom_settings = {
