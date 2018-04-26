@@ -1,1 +1,2 @@
 # ArticleSpider
+把settings_back.py命名为settings 配置好mongodb和mysqldb即可使用
