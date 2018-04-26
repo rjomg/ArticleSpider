@@ -99,7 +99,3 @@ IMAGES_STORE = os.path.join(project_dir, 'images')
 #HTTPCACHE_IGNORE_HTTP_CODES = []
 #HTTPCACHE_STORAGE = 'scrapy.extensions.httpcache.FilesystemCacheStorage'
 
-MYSQL_HOST = '120.78.208.86'
-MYSQL_DBNAME = 'article-spider'
-MYSQL_USER = 'root'
-MYSQL_PASSWORD = 'root'
